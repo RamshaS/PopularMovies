@@ -4,6 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ramshasaeed.popularmovies.MainActivity">
+    tools:context="com.ramshasaeed.popularmovies.MainActivity"
+    >
+    <GridView
+        android:id="@+id/gv_movies"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="0dp"
+        android:horizontalSpacing="0dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        tools:listitem="@layout/movie_adapter"
+        >
 
+    </GridView>
 </FrameLayout>
