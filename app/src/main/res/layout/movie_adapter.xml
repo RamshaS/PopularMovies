@@ -5,11 +5,8 @@
     android:layout_height="wrap_content">
 <ImageView
     android:id="@+id/movie_image"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:minWidth="200dp"
-    android:minHeight="300dp"
-    android:padding="0dp"
-    android:layout_margin="0dp"
-    android:src="@drawable/poster_place_holder"/>
+    android:layout_width="190dp"
+    android:layout_height="284dp"
+    android:padding="@null"
+    android:layout_margin="@null"/>
 </FrameLayout>

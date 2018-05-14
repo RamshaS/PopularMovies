@@ -10,7 +10,7 @@ public class MovieConstants {
     public static final String API_PARAM = "api_key";
     public static final String POPULAR_MOVIES_URL="popular";
     public static final String TOP_RATED_MOVIES_URL="top_rated";
-    public static final String API_KEY="";
+    public static final String API_KEY="179f1d950a65e946439b87e502d3ec70";
     public static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p";
     public static final String IMAGE_SIZE_w92 = "w92";
     public static final String IMAGE_SIZE_w154 = "w154";
