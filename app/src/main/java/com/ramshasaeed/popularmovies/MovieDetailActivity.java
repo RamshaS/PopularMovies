@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.ramshasaeed.popularmovies.model.Movie;
 import com.ramshasaeed.popularmovies.utilities.MovieConstants;
+import com.ramshasaeed.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;

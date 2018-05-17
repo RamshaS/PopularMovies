@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.ramshasaeed.popularmovies.NetworkUtils;
+import com.ramshasaeed.popularmovies.utilities.NetworkUtils;
 import com.ramshasaeed.popularmovies.R;
 import com.ramshasaeed.popularmovies.model.Movie;
 import com.ramshasaeed.popularmovies.utilities.MovieConstants;

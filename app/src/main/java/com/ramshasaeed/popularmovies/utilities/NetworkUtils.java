@@ -1,11 +1,9 @@
-package com.ramshasaeed.popularmovies;
+package com.ramshasaeed.popularmovies.utilities;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-
-import com.ramshasaeed.popularmovies.utilities.MovieConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
