@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void setMovieAdapter(Context context, final ArrayList<Movie> movieList){
-        moviesAdapter = new MoviesAdapter(MainActivity.this, movieList);
+        moviesAdapter = new MoviesAdapter(context, movieList);
         // Get a reference to the ListView, and attach this adapter to it.
         gvMovies.setAdapter(moviesAdapter);
         gvMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
