@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.ramshasaeed.popularmovies.NetworkUtils;
+import com.ramshasaeed.popularmovies.utilities.NetworkUtils;
 import com.ramshasaeed.popularmovies.R;
 import com.ramshasaeed.popularmovies.model.Movie;
 import com.ramshasaeed.popularmovies.utilities.MovieConstants;
@@ -39,12 +39,11 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         ImageView imageView = convertView.findViewById(R.id.movie_image);
         String posterPath = movie.getPosterUrl();
 
-        URL posterURL = NetworkUtils.buildImageUrl(MovieConstants.IMAGE_SIZE_w342,posterPath.replace("/",""));
+        URL posterURL = NetworkUtils.buildImageUrl(MovieConstants.IMAGE_SIZE_w185,posterPath.replace("/",""));
 
         Picasso.with(parent.getContext())
                 .load(String.valueOf(posterURL))
                 .error(android.R.drawable.ic_dialog_alert)
-                .placeholder(R.drawable.poster_place_holder)
                 .into(imageView);
 
         return convertView;

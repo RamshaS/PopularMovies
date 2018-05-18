@@ -11,11 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.ramshasaeed.popularmovies.adapter.MoviesAdapter;
 import com.ramshasaeed.popularmovies.model.Movie;
 import com.ramshasaeed.popularmovies.utilities.JSONUtils;
 import com.ramshasaeed.popularmovies.utilities.MovieConstants;
+import com.ramshasaeed.popularmovies.utilities.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,10 +29,21 @@ public class MainActivity extends AppCompatActivity {
     Intent intentDetail;
     Context context;
     ArrayList<Movie> movieList;
+    private static final String MOVIE_LIST_KEY = "movielist";
+    MoviesAdapter moviesAdapter;
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("movies", movieList);
+        outState.putParcelableArrayList(MOVIE_LIST_KEY, movieList);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Toast.makeText(context,"Restore is called",Toast.LENGTH_LONG).show();
+        movieList= savedInstanceState.getParcelableArrayList(MOVIE_LIST_KEY);
+        setMovieAdapter(context,movieList);
     }
 
     @Override
@@ -42,8 +55,15 @@ public class MainActivity extends AppCompatActivity {
         populaMovieURL = NetworkUtils.buildUrl(MovieConstants.POPULAR_MOVIES_URL);
         topRatedURL = NetworkUtils.buildUrl(MovieConstants.TOP_RATED_MOVIES_URL);
         intentDetail = new Intent(context, MovieDetailActivity.class);
-        new MovieService().execute(populaMovieURL);
-
+        //movieList = new ArrayList<>();
+        //moviesAdapter = new MoviesAdapter(this,movieList);
+        if (savedInstanceState == null) {
+            if (NetworkUtils.isOnline(context)) {
+                new MovieService().execute(populaMovieURL);
+            }else {
+                Toast.makeText(context,"No internet Connection!",Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -66,9 +86,8 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public class MovieService extends AsyncTask<URL, Void, String> {
+    public class MovieService extends AsyncTask<URL, ArrayList<Movie>, String> {
         String TAG = MovieService.class.getName();
-        MoviesAdapter moviesAdapter;
 
         @Override
         protected String doInBackground(URL... urls) {
@@ -85,29 +104,28 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String resultData) {
             if (resultData != null && !resultData.equals("")) {
-
                 movieList = JSONUtils.parseMovieJson(resultData);
-                moviesAdapter = new MoviesAdapter(MainActivity.this, movieList);
-
-                // Get a reference to the ListView, and attach this adapter to it.
-                gvMovies.setAdapter(moviesAdapter);
-                gvMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Movie itemMoview = movieList.get(position);
-                        Context context = parent.getContext();
-                        launchDetailActivity(context, itemMoview);
-                    }
-                });
-
+                setMovieAdapter(context,movieList);
             }
-        }
-        private void launchDetailActivity(Context context, Movie itemMoview) {
-            intentDetail.putExtra(MovieDetailActivity.MOVIE_INTENT_TAG,(Parcelable) itemMoview);
-            startActivity(intentDetail);
         }
 
     }
+    public void setMovieAdapter(Context context, final ArrayList<Movie> movieList){
+        moviesAdapter = new MoviesAdapter(context, movieList);
+        // Get a reference to the ListView, and attach this adapter to it.
+        gvMovies.setAdapter(moviesAdapter);
+        gvMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Movie itemMoview = movieList.get(position);
+                launchDetailActivity(itemMoview);
+            }
+        });
+    }
+
+    private void launchDetailActivity( Movie itemMoview) {
+        intentDetail.putExtra(MovieDetailActivity.MOVIE_INTENT_TAG,(Parcelable) itemMoview);
+        startActivity(intentDetail);
+    }
 }

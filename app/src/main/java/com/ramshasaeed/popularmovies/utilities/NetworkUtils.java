@@ -1,8 +1,9 @@
-package com.ramshasaeed.popularmovies;
+package com.ramshasaeed.popularmovies.utilities;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
-
-import com.ramshasaeed.popularmovies.utilities.MovieConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +47,16 @@ public class NetworkUtils {
 
         return url;
     }
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
