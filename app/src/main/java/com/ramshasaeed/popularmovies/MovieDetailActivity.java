@@ -14,10 +14,10 @@ import com.squareup.picasso.Picasso;
 import java.net.URL;
 
 public class MovieDetailActivity extends AppCompatActivity {
-    static String MOVIE_INTENT_TAG = "movie";
-    Movie movie;
-    TextView tvMovieTitle, tvReleaseDate, tvRating, tvOverview;
-    ImageView imgMovie;
+    final static String MOVIE_INTENT_TAG = "movie";
+    private Movie movie;
+    private TextView tvMovieTitle, tvReleaseDate, tvRating, tvOverview;
+    private ImageView imgMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +43,11 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private void populateUI() {
-        tvMovieTitle.setText(movie.getOriginal_title().toString());
-        tvRating.setText(movie.getVote_average()+"/10");
-        tvOverview.setText(movie.getOverview().toString());
-        String[] splitDate = movie.getRelease_date().toString().split("-");
+        tvMovieTitle.setText(movie.getOriginal_title());
+        String voteAverage = movie.getVote_average()+"/10";
+        tvRating.setText(voteAverage);
+        tvOverview.setText(movie.getOverview());
+        String[] splitDate = movie.getRelease_date().split("-");
         tvReleaseDate.setText(splitDate[0]);
         String posterPath = movie.getPosterUrl();
         URL posterURL = NetworkUtils.buildImageUrl(MovieConstants.IMAGE_SIZE_w342,posterPath.replace("/",""));
@@ -54,7 +55,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         Picasso.with(this)
                 .load(String.valueOf(posterURL))
                 .error(android.R.drawable.ic_dialog_alert)
-                .placeholder(R.drawable.poster_place_holder)
                 .into(imgMovie);
     }
 }

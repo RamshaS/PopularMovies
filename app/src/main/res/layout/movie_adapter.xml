@@ -8,5 +8,6 @@
     android:layout_width="190dp"
     android:layout_height="284dp"
     android:padding="@null"
-    android:layout_margin="@null"/>
+    android:layout_margin="@null"
+    android:contentDescription="@string/image"/>
 </FrameLayout>
