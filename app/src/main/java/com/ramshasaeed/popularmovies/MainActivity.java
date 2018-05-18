@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,13 +23,12 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    GridView gvMovies;
-    URL populaMovieURL, topRatedURL;
-    Intent intentDetail;
-    Context context;
-    ArrayList<Movie> movieList;
+    private GridView gvMovies;
+    private URL popularMovieURL, topRatedURL;
+    private Intent intentDetail;
+    private Context context;
+    private ArrayList<Movie> movieList;
     private static final String MOVIE_LIST_KEY = "movielist";
-    MoviesAdapter moviesAdapter;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -52,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = MainActivity.this;
         gvMovies = findViewById(R.id.gv_movies);
-        populaMovieURL = NetworkUtils.buildUrl(MovieConstants.POPULAR_MOVIES_URL);
+        popularMovieURL = NetworkUtils.buildUrl(MovieConstants.POPULAR_MOVIES_URL);
         topRatedURL = NetworkUtils.buildUrl(MovieConstants.TOP_RATED_MOVIES_URL);
         intentDetail = new Intent(context, MovieDetailActivity.class);
         //movieList = new ArrayList<>();
         //moviesAdapter = new MoviesAdapter(this,movieList);
         if (savedInstanceState == null) {
             if (NetworkUtils.isOnline(context)) {
-                new MovieService().execute(populaMovieURL);
+                new MovieService().execute(popularMovieURL);
             }else {
                 Toast.makeText(context,"No internet Connection!",Toast.LENGTH_LONG).show();
             }
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_sort_most_popular:
-                new MovieService().execute(populaMovieURL);
+                new MovieService().execute(popularMovieURL);
                 break;
             case R.id.action_sort_top_rated:
                 new MovieService().execute(topRatedURL);
@@ -87,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class MovieService extends AsyncTask<URL, ArrayList<Movie>, String> {
-        String TAG = MovieService.class.getName();
 
         @Override
         protected String doInBackground(URL... urls) {
@@ -110,22 +107,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    public void setMovieAdapter(Context context, final ArrayList<Movie> movieList){
-        moviesAdapter = new MoviesAdapter(context, movieList);
+    private void setMovieAdapter(Context context, final ArrayList<Movie> movieList){
+        MoviesAdapter moviesAdapter = new MoviesAdapter(context, movieList);
         // Get a reference to the ListView, and attach this adapter to it.
         gvMovies.setAdapter(moviesAdapter);
         gvMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movie itemMoview = movieList.get(position);
-                launchDetailActivity(itemMoview);
+                Movie itemMovie = movieList.get(position);
+                launchDetailActivity(itemMovie);
             }
         });
     }
 
-    private void launchDetailActivity( Movie itemMoview) {
-        intentDetail.putExtra(MovieDetailActivity.MOVIE_INTENT_TAG,(Parcelable) itemMoview);
+    private void launchDetailActivity( Movie itemMovie) {
+        intentDetail.putExtra(MovieDetailActivity.MOVIE_INTENT_TAG,itemMovie);
         startActivity(intentDetail);
     }
 }
