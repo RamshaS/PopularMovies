@@ -39,9 +39,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Toast.makeText(context,"Restore is called",Toast.LENGTH_LONG).show();
+       // Toast.makeText(context,"Restore is called",Toast.LENGTH_LONG).show();
         movieList= savedInstanceState.getParcelableArrayList(MOVIE_LIST_KEY);
-        setMovieAdapter(context,movieList);
+        if(movieList != null){
+            setMovieAdapter(context,movieList);
+        }
     }
 
     @Override
