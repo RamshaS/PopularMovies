@@ -33,6 +33,22 @@ public class NetworkUtils {
 
         return url;
     }
+    public static URL buildUrl(String movieID, String fetchType) {
+        Uri builtUri = Uri.parse(MovieConstants.BASE_URL).buildUpon()
+                .appendPath(movieID)
+                .appendPath(fetchType)
+                .appendQueryParameter(MovieConstants.API_PARAM, MovieConstants.API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
     public static URL buildImageUrl(String imageSize,String posterPath) {
         Uri builtUri = Uri.parse(MovieConstants.IMAGE_BASE_URL).buildUpon()
                 .appendPath(imageSize)
