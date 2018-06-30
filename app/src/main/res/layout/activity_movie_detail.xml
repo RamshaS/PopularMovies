@@ -38,6 +38,7 @@
                 android:layout_marginLeft="20dp"
                 android:minHeight="300dp"
                 android:minWidth="200dp"
+                tools:background="@color/colorPrimary"
                 android:contentDescription="@string/image"/>
 
             <TextView
@@ -49,6 +50,7 @@
                 android:layout_toRightOf="@id/img_movie"
                 android:layout_toEndOf="@id/img_movie"
                 android:textColor="@color/colorgreen"
+                tools:text="Release Date"
                 android:textSize="22sp" />
 
             <TextView
@@ -64,6 +66,7 @@
                 android:layout_toRightOf="@id/img_movie"
                 android:layout_toEndOf="@id/img_movie"
                 android:textSize="15sp"
+                tools:text="9.1"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -74,6 +77,38 @@
             android:layout_marginTop="20dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/list_dropdown_divider_color" />
+
+        <TextView
+            android:id="@+id/tv_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/list_dropdown_divider_color" />
+
+        <TextView
+            android:id="@+id/tv_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+
     </LinearLayout>
 
 </ScrollView>
