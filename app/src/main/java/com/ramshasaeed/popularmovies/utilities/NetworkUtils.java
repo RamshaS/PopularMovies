@@ -33,9 +33,9 @@ public class NetworkUtils {
 
         return url;
     }
-    public static URL buildUrl(String movieID, String fetchType) {
+    public static URL buildUrl(int movieID, String fetchType) {
         Uri builtUri = Uri.parse(MovieConstants.BASE_URL).buildUpon()
-                .appendPath(movieID)
+                .appendPath(String.valueOf(movieID))
                 .appendPath(fetchType)
                 .appendQueryParameter(MovieConstants.API_PARAM, MovieConstants.API_KEY)
                 .build();

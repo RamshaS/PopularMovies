@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.action_favourite:
+
+                break;
             case R.id.action_sort_most_popular:
                 new MovieService().execute(popularMovieURL);
                 break;

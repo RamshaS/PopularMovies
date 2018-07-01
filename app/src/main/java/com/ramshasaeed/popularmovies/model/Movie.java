@@ -1,22 +1,55 @@
 package com.ramshasaeed.popularmovies.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.ramshasaeed.popularmovies.database.AppDatabase;
 
 /**
  * Created by RamSl-la Saeed on 10-May-18.
  */
-
+@Entity (tableName="movie")
 public class Movie implements Parcelable {
+    @Ignore
     public Movie() {
     }
-
+@PrimaryKey (autoGenerate = true)
+private int _id;
     private int id;
     private String posterUrl;
     private String original_title;
     private String overview;
     private double vote_average;
     private String release_date;
+    private boolean favourite;
+    private String backdrop_path;
+
+@Ignore
+    public Movie(int id, String posterUrl, String original_title, String overview, double vote_average, String release_date, boolean favourite, String backdrop_path) {
+        this.id = id;
+        this.posterUrl = posterUrl;
+        this.original_title = original_title;
+        this.overview = overview;
+        this.vote_average = vote_average;
+        this.release_date = release_date;
+        this.favourite = favourite;
+        this.backdrop_path = backdrop_path;
+    }
+
+    public Movie(int _id, int id, String posterUrl, String original_title, String overview, double vote_average, String release_date, boolean favourite, String backdrop_path) {
+        this._id = _id;
+        this.id = id;
+        this.posterUrl = posterUrl;
+        this.original_title = original_title;
+        this.overview = overview;
+        this.vote_average = vote_average;
+        this.release_date = release_date;
+        this.favourite = favourite;
+        this.backdrop_path = backdrop_path;
+    }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
@@ -79,6 +112,22 @@ public class Movie implements Parcelable {
         this.release_date = release_date;
     }
 
+    public boolean getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public String getBackdrop_path() {
+        return backdrop_path;
+    }
+
+    public void setBackdrop_path(String backdrop_path) {
+        this.backdrop_path = backdrop_path;
+    }
+
     @Override
     public int describeContents() {
 
@@ -93,6 +142,8 @@ public class Movie implements Parcelable {
         dest.writeString(overview);
         dest.writeString(release_date);
         dest.writeDouble(vote_average);
+        dest.writeInt( favourite ? 1 : 0);
+        dest.writeString(backdrop_path);
     }
     private Movie(Parcel in) {
         id = in.readInt();
@@ -101,6 +152,9 @@ public class Movie implements Parcelable {
         overview = in.readString();
         release_date = in.readString();
         vote_average = in.readDouble();
+        favourite = (in.readInt() == 0) ? false : true;
+        backdrop_path = in.readString();
+        ;
     }
 
 

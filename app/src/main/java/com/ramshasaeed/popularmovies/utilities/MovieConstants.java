@@ -7,6 +7,7 @@ package com.ramshasaeed.popularmovies.utilities;
 public class MovieConstants {
 
     public static final String BASE_URL = "http://api.themoviedb.org/3/movie";
+    public static final String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
     public static final String API_PARAM = "api_key";
     public static final String POPULAR_MOVIES_URL="popular";
     public static final String TOP_RATED_MOVIES_URL="top_rated";
