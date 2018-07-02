@@ -192,8 +192,7 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
     }
     public static void watchYoutubeVideo(Context context, String id){
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(YOUTUBE_URL + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, NetworkUtils.buildYoutubeUrl(id));
         try {
             context.startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {

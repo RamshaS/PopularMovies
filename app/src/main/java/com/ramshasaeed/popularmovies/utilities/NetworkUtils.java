@@ -63,6 +63,14 @@ public class NetworkUtils {
 
         return url;
     }
+    public static Uri buildYoutubeUrl(String videoId) {
+        Uri builtUri = Uri.parse(MovieConstants.YOUTUBE_URL).buildUpon()
+                .appendPath(MovieConstants.SEARCH_TYPE)
+                .appendQueryParameter(MovieConstants.SEARCH_FIELD,videoId)
+                .build();
+
+        return builtUri;
+    }
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = null;
