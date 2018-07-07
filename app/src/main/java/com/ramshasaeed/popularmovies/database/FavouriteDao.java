@@ -12,19 +12,16 @@ import com.ramshasaeed.popularmovies.model.Movie;
 import java.util.List;
 
 @Dao
-public interface MovieDao {
+public interface FavouriteDao {
+    @Query("SELECT * FROM favourite")
+    List<Favourite> loadAllFavMovies();
 
-@Query("SELECT * FROM  movie")
-    List<Movie> loadAllMovies();
+    @Insert
+    void insertFavourite(Favourite favourite);
 
-@Insert
-    void insertMovie(Movie movie);
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateFavourite(Favourite favourite);
 
-@Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovie(Movie movie);
-
-@Delete
-    void deleteMovie(Movie movie);
-
-
+    @Delete
+    void deleteFavMovie(Favourite favourite);
 }

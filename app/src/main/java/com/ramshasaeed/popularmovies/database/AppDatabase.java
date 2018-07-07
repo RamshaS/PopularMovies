@@ -12,7 +12,7 @@ import android.util.Log;
 
 import com.ramshasaeed.popularmovies.model.Movie;
 
-@Database(entities = {Movie.class}, version = 1, exportSchema = false)
+@Database(entities = {Favourite.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
 
@@ -32,7 +32,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
 
     }
-    public abstract MovieDao movieDao();
+    public abstract Favourite favouriteDao();
     @NonNull
     @Override
     protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration config) {

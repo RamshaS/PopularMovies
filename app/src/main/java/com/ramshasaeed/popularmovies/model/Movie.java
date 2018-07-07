@@ -11,13 +11,10 @@ import com.ramshasaeed.popularmovies.database.AppDatabase;
 /**
  * Created by RamSl-la Saeed on 10-May-18.
  */
-@Entity (tableName="movie")
 public class Movie implements Parcelable {
-    @Ignore
+
     public Movie() {
     }
-@PrimaryKey (autoGenerate = true)
-private int _id;
     private int id;
     private String posterUrl;
     private String original_title;
@@ -27,29 +24,6 @@ private int _id;
     private boolean favourite;
     private String backdrop_path;
 
-@Ignore
-    public Movie(int id, String posterUrl, String original_title, String overview, double vote_average, String release_date, boolean favourite, String backdrop_path) {
-        this.id = id;
-        this.posterUrl = posterUrl;
-        this.original_title = original_title;
-        this.overview = overview;
-        this.vote_average = vote_average;
-        this.release_date = release_date;
-        this.favourite = favourite;
-        this.backdrop_path = backdrop_path;
-    }
-
-    public Movie(int _id, int id, String posterUrl, String original_title, String overview, double vote_average, String release_date, boolean favourite, String backdrop_path) {
-        this._id = _id;
-        this.id = id;
-        this.posterUrl = posterUrl;
-        this.original_title = original_title;
-        this.overview = overview;
-        this.vote_average = vote_average;
-        this.release_date = release_date;
-        this.favourite = favourite;
-        this.backdrop_path = backdrop_path;
-    }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
