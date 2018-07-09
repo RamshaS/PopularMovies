@@ -1,5 +1,6 @@
 package com.ramshasaeed.popularmovies.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -14,7 +15,7 @@ import java.util.List;
 @Dao
 public interface FavouriteDao {
     @Query("SELECT * FROM favourite")
-    List<Favourite> loadAllFavMovies();
+    LiveData<List<Favourite>> loadAllFavMovies();
 
     @Insert
     void insertFavourite(Favourite favourite);
@@ -24,4 +25,7 @@ public interface FavouriteDao {
 
     @Delete
     void deleteFavMovie(Favourite favourite);
+
+    @Query("SELECT * FROM favourite WHERE id = :id")
+    LiveData<Favourite> loadTaskById(int id);
 }

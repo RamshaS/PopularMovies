@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class Favourite {
 
     @PrimaryKey(autoGenerate = true)
-    private int _id;
+    private int col_id;
     private int id;
     private String posterUrl;
     private String original_title;
@@ -16,8 +16,9 @@ public class Favourite {
     private double vote_average;
     private String release_date;
     private String backdrop_path;
-    public Favourite(int _id, int id, String posterUrl, String original_title, String overview, double vote_average, String release_date, String backdrop_path) {
-        this._id = _id;
+
+    public Favourite(int col_id, int id, String posterUrl, String original_title, String overview, double vote_average, String release_date, String backdrop_path) {
+        this.col_id = col_id;
         this.id = id;
         this.posterUrl = posterUrl;
         this.original_title = original_title;
@@ -38,12 +39,12 @@ public class Favourite {
         this.backdrop_path = backdrop_path;
     }
 
-    public int get_id() {
-        return _id;
+    public int getCol_id() {
+        return col_id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setCol_id(int col_id) {
+        this.col_id = col_id;
     }
 
     public int getId() {

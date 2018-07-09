@@ -25,14 +25,14 @@ public abstract class AppDatabase extends RoomDatabase {
         if (sInstance == null){
             synchronized (LOCK){
                 Log.d(LOG_TAG,"Creating new database");
-                sInstance = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class,AppDatabase.DATABASE_NAME).allowMainThreadQueries().build();
+                sInstance = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class,AppDatabase.DATABASE_NAME).build();
             }
         }
         Log.d(LOG_TAG,"Getting the Database instance");
         return sInstance;
 
     }
-    public abstract Favourite favouriteDao();
+    public abstract FavouriteDao favouriteDao();
     @NonNull
     @Override
     protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration config) {

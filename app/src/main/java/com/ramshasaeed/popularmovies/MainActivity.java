@@ -1,18 +1,24 @@
 package com.ramshasaeed.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ramshasaeed.popularmovies.adapter.MoviesAdapter;
+import com.ramshasaeed.popularmovies.database.AppDatabase;
+import com.ramshasaeed.popularmovies.database.Favourite;
 import com.ramshasaeed.popularmovies.model.Movie;
 import com.ramshasaeed.popularmovies.utilities.JSONUtils;
 import com.ramshasaeed.popularmovies.utilities.MovieConstants;
@@ -21,6 +27,7 @@ import com.ramshasaeed.popularmovies.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private GridView gvMovies;
@@ -29,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private ArrayList<Movie> movieList;
     private static final String MOVIE_LIST_KEY = "movielist";
+    private TextView noItem;
 
+    private AppDatabase mDb;
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(MOVIE_LIST_KEY, movieList);
@@ -52,11 +61,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = MainActivity.this;
         gvMovies = findViewById(R.id.gv_movies);
+noItem = findViewById(R.id.noItem);
         popularMovieURL = NetworkUtils.buildUrl(MovieConstants.POPULAR_MOVIES_URL);
         topRatedURL = NetworkUtils.buildUrl(MovieConstants.TOP_RATED_MOVIES_URL);
         intentDetail = new Intent(context, MovieDetailActivity.class);
+
         //movieList = new ArrayList<>();
         //moviesAdapter = new MoviesAdapter(this,movieList);
+        mDb = AppDatabase.getInstance(getApplicationContext());
         if (savedInstanceState == null) {
             if (NetworkUtils.isOnline(context)) {
                 new MovieService().execute(popularMovieURL);
@@ -77,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_favourite:
-
+                getFavouriteList();
                 break;
             case R.id.action_sort_most_popular:
                 new MovieService().execute(popularMovieURL);
@@ -87,6 +99,38 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    private void getFavouriteList() {
+        LiveData<List<Favourite>> favourites = mDb.favouriteDao().loadAllFavMovies();
+        favourites.observe(this, new Observer<List<Favourite>>() {
+            @Override
+            public void onChanged(@Nullable List<Favourite> favourites) {
+                if (favourites != null && !favourites.equals("")) {
+                    movieList  =  getMovieList(favourites);
+                    setMovieAdapter(context,movieList);
+                }else{
+noItem.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private ArrayList<Movie> getMovieList(List<Favourite> favourites) {
+        ArrayList<Movie> movieList = new ArrayList<>();
+        Movie movie;
+        for(int i = 0 ; i < favourites.size();i++){
+            movie = new Movie();
+            movie.setId(favourites.get(i).getId());
+            movie.setBackdrop_path(favourites.get(i).getBackdrop_path());
+            movie.setOriginal_title(favourites.get(i).getOriginal_title());
+            movie.setOverview(favourites.get(i).getOverview());
+            movie.setPosterUrl(favourites.get(i).getPosterUrl());
+            movie.setRelease_date(favourites.get(i).getRelease_date());
+            movie.setVote_average(favourites.get(i).getVote_average());
+            movieList.add(movie);
+        }
+        return movieList;
     }
 
     public class MovieService extends AsyncTask<URL, ArrayList<Movie>, String> {
