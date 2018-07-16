@@ -2,6 +2,8 @@ package com.ramshasaeed.popularmovies;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelStore;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,7 +20,8 @@ import android.widget.Toast;
 
 import com.ramshasaeed.popularmovies.adapter.MoviesAdapter;
 import com.ramshasaeed.popularmovies.database.AppDatabase;
-import com.ramshasaeed.popularmovies.database.Favourite;
+import com.ramshasaeed.popularmovies.database.FavouriteDao_Impl;
+import com.ramshasaeed.popularmovies.database.FavouriteViewModel;
 import com.ramshasaeed.popularmovies.model.Movie;
 import com.ramshasaeed.popularmovies.utilities.JSONUtils;
 import com.ramshasaeed.popularmovies.utilities.MovieConstants;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView noItem;
 
     private AppDatabase mDb;
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(MOVIE_LIST_KEY, movieList);
@@ -48,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-       // Toast.makeText(context,"Restore is called",Toast.LENGTH_LONG).show();
-        movieList= savedInstanceState.getParcelableArrayList(MOVIE_LIST_KEY);
-        if(movieList != null){
-            setMovieAdapter(context,movieList);
+        // Toast.makeText(context,"Restore is called",Toast.LENGTH_LONG).show();
+        movieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST_KEY);
+        if (movieList != null) {
+            setMovieAdapter(context, movieList);
         }
     }
 
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = MainActivity.this;
         gvMovies = findViewById(R.id.gv_movies);
-noItem = findViewById(R.id.noItem);
+        noItem = findViewById(R.id.noItem);
         popularMovieURL = NetworkUtils.buildUrl(MovieConstants.POPULAR_MOVIES_URL);
         topRatedURL = NetworkUtils.buildUrl(MovieConstants.TOP_RATED_MOVIES_URL);
         intentDetail = new Intent(context, MovieDetailActivity.class);
@@ -72,8 +76,8 @@ noItem = findViewById(R.id.noItem);
         if (savedInstanceState == null) {
             if (NetworkUtils.isOnline(context)) {
                 new MovieService().execute(popularMovieURL);
-            }else {
-                Toast.makeText(context,"No internet Connection!",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "No internet Connection!", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -93,33 +97,41 @@ noItem = findViewById(R.id.noItem);
                 break;
             case R.id.action_sort_most_popular:
                 new MovieService().execute(popularMovieURL);
+                noItem.setVisibility(View.GONE);
                 break;
             case R.id.action_sort_top_rated:
                 new MovieService().execute(topRatedURL);
+                noItem.setVisibility(View.GONE);
                 break;
         }
         return true;
     }
 
     private void getFavouriteList() {
-        LiveData<List<Favourite>> favourites = mDb.favouriteDao().loadAllFavMovies();
-        favourites.observe(this, new Observer<List<Favourite>>() {
+        FavouriteViewModel viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication()).create(FavouriteViewModel.class);
+
+//        LiveData<List<Movie>> favourites = mDb.favouriteDao().loadAllFavMovies();
+//        if (favourites != null && !favourites.equals("")) {
+        viewModel.getMovieLists().observe(this, new Observer<List<Movie>>() {
             @Override
-            public void onChanged(@Nullable List<Favourite> favourites) {
-                if (favourites != null && !favourites.equals("")) {
-                    movieList  =  getMovieList(favourites);
-                    setMovieAdapter(context,movieList);
-                }else{
-noItem.setVisibility(View.VISIBLE);
-                }
+            public void onChanged(@Nullable List<Movie> movies) {
+                movieList = getMovieList(movies);
+                setMovieAdapter(context, movieList);
+
+       if (movies.size() != 0 ) {
+            noItem.setVisibility(View.GONE);
+        } else {
+            noItem.setVisibility(View.VISIBLE);
+        }
             }
         });
+
     }
 
-    private ArrayList<Movie> getMovieList(List<Favourite> favourites) {
+    private ArrayList<Movie> getMovieList(List<Movie> favourites) {
         ArrayList<Movie> movieList = new ArrayList<>();
         Movie movie;
-        for(int i = 0 ; i < favourites.size();i++){
+        for (int i = 0; i < favourites.size(); i++) {
             movie = new Movie();
             movie.setId(favourites.get(i).getId());
             movie.setBackdrop_path(favourites.get(i).getBackdrop_path());
@@ -151,12 +163,13 @@ noItem.setVisibility(View.VISIBLE);
         protected void onPostExecute(String resultData) {
             if (resultData != null && !resultData.equals("")) {
                 movieList = JSONUtils.parseMovieJson(resultData);
-                setMovieAdapter(context,movieList);
+                setMovieAdapter(context, movieList);
             }
         }
 
     }
-    private void setMovieAdapter(Context context, final ArrayList<Movie> movieList){
+
+    private void setMovieAdapter(Context context, final ArrayList<Movie> movieList) {
         MoviesAdapter moviesAdapter = new MoviesAdapter(context, movieList);
         // Get a reference to the ListView, and attach this adapter to it.
         gvMovies.setAdapter(moviesAdapter);
@@ -170,8 +183,8 @@ noItem.setVisibility(View.VISIBLE);
         });
     }
 
-    private void launchDetailActivity( Movie itemMovie) {
-        intentDetail.putExtra(MovieDetailActivity.MOVIE_INTENT_TAG,itemMovie);
+    private void launchDetailActivity(Movie itemMovie) {
+        intentDetail.putExtra(MovieDetailActivity.MOVIE_INTENT_TAG, itemMovie);
         startActivity(intentDetail);
     }
 }

@@ -15,17 +15,17 @@ import java.util.List;
 @Dao
 public interface FavouriteDao {
     @Query("SELECT * FROM favourite")
-    LiveData<List<Favourite>> loadAllFavMovies();
+    LiveData<List<Movie>> loadAllFavMovies();
 
     @Insert
-    void insertFavourite(Favourite favourite);
+    void insertFavourite(Movie favourite);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateFavourite(Favourite favourite);
+    void updateFavourite(Movie favourite);
 
     @Delete
-    void deleteFavMovie(Favourite favourite);
+    void deleteFavMovie(Movie favourite);
 
     @Query("SELECT * FROM favourite WHERE id = :id")
-    LiveData<Favourite> loadTaskById(int id);
+    LiveData<Movie> loadFavoriteById(int id);
 }

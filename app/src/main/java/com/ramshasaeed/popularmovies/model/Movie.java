@@ -6,24 +6,48 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.ramshasaeed.popularmovies.database.AppDatabase;
-
 /**
  * Created by RamSl-la Saeed on 10-May-18.
  */
+@Entity(tableName = "favourite")
 public class Movie implements Parcelable {
 
-    public Movie() {
-    }
+    @PrimaryKey
     private int id;
     private String posterUrl;
     private String original_title;
     private String overview;
     private double vote_average;
     private String release_date;
-    private boolean favourite;
+    private boolean isFavorite;
     private String backdrop_path;
 
+    @Ignore
+    public Movie() {
+    }
+
+    public Movie(int id, String posterUrl, String original_title, String overview,
+                 double vote_average, String release_date, String backdrop_path) {
+        this.id = id;
+        this.posterUrl = posterUrl;
+        this.original_title = original_title;
+        this.overview = overview;
+        this.vote_average = vote_average;
+        this.release_date = release_date;
+        this.backdrop_path = backdrop_path;
+    }
+
+    @Ignore
+    private Movie(Parcel in) {
+        id = in.readInt();
+        posterUrl = in.readString();
+        original_title = in.readString();
+        overview = in.readString();
+        release_date = in.readString();
+        vote_average = in.readDouble();
+        isFavorite = (in.readInt() == 0) ? false : true;
+        backdrop_path = in.readString();
+    }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
@@ -36,7 +60,6 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
-
 
     public int getId() {
         return id;
@@ -86,12 +109,12 @@ public class Movie implements Parcelable {
         this.release_date = release_date;
     }
 
-    public boolean getFavourite() {
-        return favourite;
+    public boolean isFavorite() {
+        return isFavorite;
     }
 
-    public void setFavourite(boolean favourite) {
-        this.favourite = favourite;
+    public void setFavorite(boolean favorite) {
+        this.isFavorite = favorite;
     }
 
     public String getBackdrop_path() {
@@ -104,7 +127,6 @@ public class Movie implements Parcelable {
 
     @Override
     public int describeContents() {
-
         return 0;
     }
 
@@ -116,20 +138,7 @@ public class Movie implements Parcelable {
         dest.writeString(overview);
         dest.writeString(release_date);
         dest.writeDouble(vote_average);
-        dest.writeInt( favourite ? 1 : 0);
+        dest.writeInt(isFavorite ? 1 : 0);
         dest.writeString(backdrop_path);
     }
-    private Movie(Parcel in) {
-        id = in.readInt();
-        posterUrl = in.readString();
-        original_title = in.readString();
-        overview = in.readString();
-        release_date = in.readString();
-        vote_average = in.readDouble();
-        favourite = (in.readInt() == 0) ? false : true;
-        backdrop_path = in.readString();
-        ;
-    }
-
-
 }
