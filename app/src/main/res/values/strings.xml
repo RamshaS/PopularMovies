@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">PopularMovies</string>
+    <string name="favorite">Favourite</string>
     <string name="popular">Most Popular</string>
     <string name="toprated">Top Rated</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailer">Trailers</string>
+    <string name="author">Ramsha</string>
+    <string name="content">This movie is amazing and thrilling to watch</string>
+    <string name="name">Incredibles 2</string>
     <string name="image">This image will be populated through internet</string>
 </resources>

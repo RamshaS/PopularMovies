@@ -7,9 +7,14 @@ package com.ramshasaeed.popularmovies.utilities;
 public class MovieConstants {
 
     public static final String BASE_URL = "http://api.themoviedb.org/3/movie";
+    public static final String YOUTUBE_URL = "http://www.youtube.com";
+    public static final String SEARCH_TYPE = "watch";
+    public static final String SEARCH_FIELD = "v";
     public static final String API_PARAM = "api_key";
     public static final String POPULAR_MOVIES_URL="popular";
     public static final String TOP_RATED_MOVIES_URL="top_rated";
+    public static final String MOVIE_REVIEWS_URL="reviews";
+    public static final String MOVIE_TRAILERS_URL="videos";
     public static final String API_KEY="";
     public static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p";
     public static final String IMAGE_SIZE_w92 = "w92";

@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:orientation="vertical"
     tools:context="com.ramshasaeed.popularmovies.MainActivity"
     >
+    <TextView
+        android:id="@+id/noItem"
+        android:text="There is no Favourite Movie"
+        android:visibility="gone"
+        android:textSize="25sp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+        />
     <GridView
         android:id="@+id/gv_movies"
         android:layout_width="match_parent"
@@ -22,4 +33,4 @@
         >
 
     </GridView>
-</merge>
+</LinearLayout>

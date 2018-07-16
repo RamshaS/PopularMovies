@@ -33,6 +33,22 @@ public class NetworkUtils {
 
         return url;
     }
+    public static URL buildUrl(int movieID, String fetchType) {
+        Uri builtUri = Uri.parse(MovieConstants.BASE_URL).buildUpon()
+                .appendPath(String.valueOf(movieID))
+                .appendPath(fetchType)
+                .appendQueryParameter(MovieConstants.API_PARAM, MovieConstants.API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
     public static URL buildImageUrl(String imageSize,String posterPath) {
         Uri builtUri = Uri.parse(MovieConstants.IMAGE_BASE_URL).buildUpon()
                 .appendPath(imageSize)
@@ -46,6 +62,14 @@ public class NetworkUtils {
         }
 
         return url;
+    }
+    public static Uri buildYoutubeUrl(String videoId) {
+        Uri builtUri = Uri.parse(MovieConstants.YOUTUBE_URL).buildUpon()
+                .appendPath(MovieConstants.SEARCH_TYPE)
+                .appendQueryParameter(MovieConstants.SEARCH_FIELD,videoId)
+                .build();
+
+        return builtUri;
     }
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
