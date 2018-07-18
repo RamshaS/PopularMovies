@@ -60,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
             setMovieAdapter(context, movieList);
         }
         int currentPosition = savedInstanceState.getInt(CURRENT_GRID_VIEW_POSITION);
-        gvMovies.scrollBy(0, currentPosition);
+//        gvMovies.scrollBy(0, currentPosition); //not working
+//        gvMovies.smoothScrollToPosition(currentPosition); //not working
+        gvMovies.setSelection(currentPosition);
     }
 
     @Override
