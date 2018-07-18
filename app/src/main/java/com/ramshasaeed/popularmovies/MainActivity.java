@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private ArrayList<Movie> movieList;
     private static final String MOVIE_LIST_KEY = "movielist";
+    private static final String CURRENT_GRID_VIEW_POSITION = "currentpos";
     private TextView noItem;
 
     private AppDatabase mDb;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(MOVIE_LIST_KEY, movieList);
+        outState.putInt(CURRENT_GRID_VIEW_POSITION, gvMovies.getFirstVisiblePosition());
         super.onSaveInstanceState(outState);
     }
 
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         if (movieList != null) {
             setMovieAdapter(context, movieList);
         }
+        int currentPosition = savedInstanceState.getInt(CURRENT_GRID_VIEW_POSITION);
+        gvMovies.scrollBy(0, currentPosition);
     }
 
     @Override
